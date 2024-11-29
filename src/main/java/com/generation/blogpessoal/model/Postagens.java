@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -31,11 +34,21 @@ public class Postagens {
 	@UpdateTimestamp
 	private LocalDateTime data;
 	
+	@ManyToOne// Muitas postagens podem ter apenas 1 tema 
+	@JsonIgnoreProperties("postagens")
+	private Tema tema;//No modelo Relacional será a Chave Estrangeira na Tabela tb_postagens (tema_id).
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Tema getTema() {
+		return tema;
+	}
+	public void setTema(Tema tema) {
+		this.tema = tema;
 	}
 	public String getTitulo() {
 		return titulo;
