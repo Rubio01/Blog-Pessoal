@@ -15,60 +15,79 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@Entity 
-@Table(name="tb_postagens") 
+@Entity
+@Table(name = "tb_postagens")
 public class Postagens {
-	
+
 	@Id // primary key
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
-	@Size(min=5, max = 100)
+	@Size(min = 5, max = 100)
 	private String titulo;
-	
+
 	@NotBlank
-	@Size(min=5)
+	@Size(min = 5)
 	private String texto;
 	
 	@UpdateTimestamp
 	private LocalDateTime data;
-	
-	@ManyToOne// Muitas postagens podem ter apenas 1 tema 
+
+	@ManyToOne 
 	@JsonIgnoreProperties("postagens")
-	private Tema tema;//No modelo Relacional será a Chave Estrangeira na Tabela tb_postagens (tema_id).
+	private Tema tema;
+
+	@ManyToOne
+	@JsonIgnoreProperties("postagens")
+	private Usuario usuario;
 	
+	public Usuario getUsario() {
+		return usuario;
+	}
+
+	public void setUsario(Usuario usario) {
+		this.usuario = usario;
+	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public Tema getTema() {
 		return tema;
 	}
+
 	public void setTema(Tema tema) {
 		this.tema = tema;
 	}
+
 	public String getTitulo() {
 		return titulo;
 	}
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+
 	public String getTexto() {
 		return texto;
 	}
+
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
+
 	public LocalDateTime getData() {
 		return data;
 	}
+
 	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
-	
-	
 
 }

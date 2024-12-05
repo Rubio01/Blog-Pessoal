@@ -69,7 +69,7 @@ public class PostagemController {
 	public ResponseEntity<List<Postagens>> getByTitulo(@PathVariable String titulo) {
 		return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
 	}
-
+	// Métodos PUT e POST da Classe Postagem Atualizados
 	@PostMapping
 	public ResponseEntity<Postagens> post(@Valid @RequestBody Postagens postagem) {
 		if (temaRepository.existsById(postagem.getTema().getId()))
