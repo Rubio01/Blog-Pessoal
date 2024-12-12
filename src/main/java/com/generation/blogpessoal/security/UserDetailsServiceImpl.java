@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.generation.blogpessoal.model.Usuario;
 import com.generation.blogpessoal.repository.UsuarioRepository;
 
-@Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+@Service // verificação no banco de dados 
+public class UserDetailsServiceImpl implements UserDetailsService {	
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;

@@ -21,7 +21,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
+@Component // Reponsavel por fazer o filtro de token em cada requisição
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	@Autowired

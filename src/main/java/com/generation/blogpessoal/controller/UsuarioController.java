@@ -36,14 +36,29 @@ public class UsuarioController {
 	@GetMapping("/all")
 	public ResponseEntity<List<Usuario>> getAll() {
 
-		return ResponseEntity.ok(usuarioRepository.findAll());
+		List<Usuario> usuarios = usuarioRepository.findAll();
+
+		usuarios.forEach(usuario -> usuario.setSenha("")); // Limpar a senha para o retorno
+
+		return ResponseEntity.ok(usuarios);
 
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> getById(@PathVariable Long id) {
-		return usuarioRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
-				.orElse(ResponseEntity.notFound().build());
+
+		Optional<Usuario> usuario = usuarioRepository.findById(id);
+		usuario.get().setSenha(""); // limpar a senha para o retorno
+		return usuario.map(resposta -> ResponseEntity.ok(resposta)).orElse(ResponseEntity.notFound().build());
+	}
+
+	@GetMapping("/usuario/{nome}")
+	public ResponseEntity<Usuario> getById(@PathVariable String nome) {
+
+		return usuarioRepository.findAllByNomeContainingIgnoreCase(nome).map(usuario -> {
+			usuario.setSenha(""); // Limpa a senha antes de retornar
+			return ResponseEntity.ok(usuario);
+		}).orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping("/logar")

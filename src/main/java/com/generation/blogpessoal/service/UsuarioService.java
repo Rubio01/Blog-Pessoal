@@ -16,7 +16,7 @@ import com.generation.blogpessoal.model.Usuario;
 import com.generation.blogpessoal.repository.UsuarioRepository;
 import com.generation.blogpessoal.security.JwtService;
 
-@Service
+@Service // Resposavel pela regra do negócio // por acessar o banco de dados // por encripitografar a senha
 public class UsuarioService {
 
 	@Autowired
@@ -28,14 +28,18 @@ public class UsuarioService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
+	public Optional<Usuario> cadastrarUsuario(Usuario usuario) { // evitar o null pointer exception
 
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
-			return Optional.empty();
+			return Optional.empty();// Usuario já existe
 
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
+		
+		Usuario usuarioSalvo =usuarioRepository.save(usuario);
+		
+		usuarioSalvo.setSenha("");
 
-		return Optional.of(usuarioRepository.save(usuario));
+		return Optional.of(usuarioSalvo);
 
 	}
 
@@ -49,8 +53,12 @@ public class UsuarioService {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 
 			usuario.setSenha(criptografarSenha(usuario.getSenha()));
+			
+			Usuario usuarioSalvo = usuarioRepository.save(usuario);
+			
+			usuarioSalvo.setSenha("");
 
-			return Optional.ofNullable(usuarioRepository.save(usuario));
+			return Optional.ofNullable(usuarioSalvo);
 
 		}
 
@@ -61,11 +69,13 @@ public class UsuarioService {
 	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
 
 		// Gera o Objeto de autenticação
-		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(),
-				usuarioLogin.get().getSenha());
+		var credenciais = new UsernamePasswordAuthenticationToken(
+				usuarioLogin.get().getUsuario(),
+				usuarioLogin.get().getSenha()
+		);
 
 		// Autentica o Usuario
-		Authentication authentication = authenticationManager.authenticate(credenciais);
+		Authentication authentication = authenticationManager.authenticate(credenciais);// valida as credenciais
 
 		// Se a autenticação foi efetuada com sucesso
 		if (authentication.isAuthenticated()) {
@@ -93,7 +103,7 @@ public class UsuarioService {
 		return Optional.empty();
 
 	}
-
+//metodo para encripritografar a senha
 	private String criptografarSenha(String senha) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
