@@ -49,8 +49,7 @@ public class Usuario {
 		this.foto = foto;
 	}
 
-	public Usuario(){
-
+	public Usuario() {
 	}
 
 	public Long getId() {
