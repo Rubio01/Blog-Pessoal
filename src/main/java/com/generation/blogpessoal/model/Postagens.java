@@ -42,12 +42,12 @@ public class Postagens {
 	@JsonIgnoreProperties("postagens")
 	private Usuario usuario;
 	
-	public Usuario getUsario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setUsario(Usuario usario) {
-		this.usuario = usario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Long getId() {
